@@ -3,7 +3,7 @@ namespace movie_reservation_system
 {
     public class AddMovieUseCase
     {
-        private Movie movie { get; set; }
+     
         private FakeMovieRepository fakeMovieRepository { get; set; }
 
         
@@ -15,7 +15,7 @@ namespace movie_reservation_system
 
         internal void Execute(Movie movie, FakeMovieRepository fakeMovieRepository)
         {
-
+            fakeMovieRepository.AddMovie(movie);
         }
     }
 }

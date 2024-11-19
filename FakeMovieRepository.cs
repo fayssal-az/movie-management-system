@@ -1,12 +1,25 @@
 ﻿using System.Collections;
+using System.Collections.Immutable;
 
 namespace movie_reservation_system
 {
-    internal class FakeMovieRepository
+    public class FakeMovieRepository
     {
-        internal List<Movie> GetMovie(Movie movie)
+        public List<Movie> Movies { get; set; } = new List<Movie>();
+        internal void AddMovie(Movie movie)
         {
-            return new List<Movie> {movie };
+            Movies.Add(movie);
+        }
+
+        internal List<Movie> GetMovie(Guid id)
+        {
+            return Movies;
+        }
+
+        internal void UpdateMovie(Guid movieId, MovieDto movieDto)
+        {
+            Movie movieToUpdate = Movies.Where(movie => movie.Id == movieId).FirstOrDefault();
+            movieToUpdate.Title = movieDto.Title;
         }
     }
 }

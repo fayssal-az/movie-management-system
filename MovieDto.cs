@@ -1,15 +1,11 @@
 ﻿namespace movie_reservation_system
 {
-    public class Movie
+    public class MovieDto
     {
-        public Guid Id { get; private set; }
         public string Title { get; set; }
-
-        public Movie(string title)
+        public MovieDto(string title)
         {
-            Id = Guid.NewGuid();
             Title = title;
         }
-
     }
 }
