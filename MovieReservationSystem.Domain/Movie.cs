@@ -1,4 +1,4 @@
-﻿namespace movie_reservation_system
+﻿namespace MovieReservationSystem.Domain
 {
     public class Movie
     {
