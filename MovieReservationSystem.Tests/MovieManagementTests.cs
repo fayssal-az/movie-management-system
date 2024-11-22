@@ -47,5 +47,21 @@ public class MovieManagementTests
 
     }
 
+    [Fact]
+    public void Given_an_existing_movie_when_a_user_removes_the_movie_the_movie_is_removed()
+    {
+
+        _fakeMovieRepository.Movies = new List<Movie> { _movie };
+
+        RemoveMovieUseCase removeMovie = new RemoveMovieUseCase(_fakeMovieRepository);
+
+        MovieDto updateMovieDto = new MovieDto("The Lord of the Rings");
+
+        removeMovie.Execute(_movie.Id);
+
+        Assert.Empty(_fakeMovieRepository.Movies);
+
+    }
+
 }
 

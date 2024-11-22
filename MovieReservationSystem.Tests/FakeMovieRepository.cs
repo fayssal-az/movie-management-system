@@ -25,5 +25,10 @@ namespace MovieReservationSystem.Tests
             Movie movieToUpdate = Movies.Where(movie => movie.Id == movieId).FirstOrDefault();
             movieToUpdate.Title = movieDto.Title;
         }
+
+        public void RemoveMovie(Guid movieId)
+        {
+            Movies.Remove(Movies.Where(movie => movie.Id == movieId).FirstOrDefault());
+        }
     }
 }
