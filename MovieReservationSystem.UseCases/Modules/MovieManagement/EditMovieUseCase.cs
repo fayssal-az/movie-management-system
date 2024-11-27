@@ -17,6 +17,12 @@ namespace MovieReservationSystem.UseCases.Modules.MovieManagement
 
             MovieInDbDto movieDto = _movieRepository.GetMovieById(movieId);
 
+            if (movieDto == null)
+            {
+                throw new Exception("Movie not found");
+            }
+
+
             // Question : la MAJ de l'objet domain n'implique pas la MAJ de la DB
             Movie movie = Movie.CreateMovieFromId(movieId, editMovieDto.Title, editMovieDto.PosterImageURL, editMovieDto.Description);
 

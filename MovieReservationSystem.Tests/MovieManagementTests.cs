@@ -61,6 +61,24 @@ public class MovieManagementTests
     }
 
     [Fact]
+    public void When_a_user_edits_a_movie_And_the_movie_is_not_found_Then_an_exception_is_thrown()
+    {
+
+
+        EditMovieUseCase editMovieUc = new EditMovieUseCase(_fakeMovieRepository);
+
+        EditMovieDto editMovieDto = new EditMovieDto("The Lord of the Rings", "url", "description");
+
+
+
+        // Question : how check that the Db is called ? Shold we check here ?
+
+
+        Assert.Throws<Exception>(() => editMovieUc.Execute(_movie.GetId(), editMovieDto));
+    }
+
+
+    [Fact]
     public void When_a_user_removes_the_movie_then_the_movie_is_removed()
     {
 
