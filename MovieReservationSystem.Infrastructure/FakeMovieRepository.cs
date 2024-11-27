@@ -30,7 +30,15 @@ namespace MovieReservationSystem.Infrastructure
         
         public void RemoveMovie(Guid movieId)
         {
-            DataStore.Movies.Remove(DataStore.Movies.FirstOrDefault(movie => movie.Id == movieId));
+
+            // Question : comment améliorer ça ?
+            var movieToRemove = DataStore.Movies.FirstOrDefault(movie => movie.Id == movieId);
+
+            if (movieToRemove == null)
+            {
+                throw new Exception("Movie not found");
+            }
+            DataStore.Movies.Remove(movieToRemove);
         }
 
         public MovieInDbDto GetMovieById(Guid movieId)

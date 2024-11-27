@@ -74,21 +74,16 @@ public class MovieManagementTests
 
     }
 
-    //[Fact]
-    //public void Given_a_movie_When_a_user_removes_the_movie_And_the_movie_is_not_found_then_an_error_is_raised()
-    //{
+    [Fact]
+    public void Given_a_movie_When_a_user_removes_the_movie_And_the_movie_is_not_found_then_an_error_is_raised()
+    {
 
-    //    _fakeMovieRepository.Movies = new List<Movie> { };
 
-    //    RemoveMovieUseCase removeMovie = new RemoveMovieUseCase(_fakeMovieRepository);
+        RemoveMovieUseCase removeMovie = new RemoveMovieUseCase(_fakeMovieRepository);
 
-    //    UpdateMovieDto updateMovieDto = new UpdateMovieDto("The Lord of the Rings", "url", "description");
+        Assert.Throws<Exception>(() => removeMovie.Execute(_movie.GetId()));
 
-    //    removeMovie.Execute(_movie.GetId());
-
-    //    Assert.True(false);
-
-    //}
+    }
 
 }
 
