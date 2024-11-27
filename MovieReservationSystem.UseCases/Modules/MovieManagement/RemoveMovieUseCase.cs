@@ -1,6 +1,6 @@
-﻿using MovieReservationSystem.Domain;
+﻿using MovieReservationSystem.Domain.Abstractions;
 
-namespace MovieReservationSystem.UseCases
+namespace MovieReservationSystem.UseCases.Modules.MovieManagement
 {
     public class RemoveMovieUseCase
     {

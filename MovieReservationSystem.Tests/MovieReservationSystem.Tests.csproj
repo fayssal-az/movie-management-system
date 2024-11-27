@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieReservationSystem.Domain\MovieReservationSystem.Domain.csproj" />
+    <ProjectReference Include="..\MovieReservationSystem.Infrastructure\MovieReservationSystem.Infrastructure.csproj" />
     <ProjectReference Include="..\MovieReservationSystem.UseCases\MovieReservationSystem.UseCases.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,9 @@
 using MovieReservationSystem.Domain;
-using MovieReservationSystem.UseCases;
 using MovieReservationSystem.Domain.DTOs;
+using MovieReservationSystem.UseCases;
+using MovieReservationSystem.UseCases.Modules.MovieManagement;
+using MovieReservationSystem.Infrastructure;
+
 
 namespace MovieReservationSystem.Tests;
 public class MovieManagementTests
@@ -10,58 +13,82 @@ public class MovieManagementTests
 
     public MovieManagementTests()
     {
-        _movie = new Movie("Pulp Fiction");
+        _movie = Movie.CreateMovie("Pulp Fiction", "pulp.png", "Best film ever");
         _fakeMovieRepository = new FakeMovieRepository();
     }
 
     [Fact]
-    public void Given_a_movie_when_a_user_add_a_movie_then_the_movie_is_added()
+    public void When_a_user_adds_a_movie_to_an_empty_store_Then_the_movie_is_added()
     {
 
         AddMovieUseCase addAMovieUC = new AddMovieUseCase(_fakeMovieRepository);
 
-        addAMovieUC.Execute(_movie);
+        CreateMovieDto movieDto = new CreateMovieDto()
+        {
+            Title = "Pulp Fiction",
+            Description = "Best film ever",
+            PosterImageURL = "pulp.png",
+        };
 
-        Assert.NotEmpty(_fakeMovieRepository.GetMovie(_movie.Id));
+        Guid movieId = addAMovieUC.Execute(movieDto);
 
-        Assert.Equal(_movie.Id, _fakeMovieRepository.GetMovie(_movie.Id).FirstOrDefault().Id);
+        // Question : how check that the Db is called ? Shold we check here ?
 
-    }
-
-    [Fact]
-    public void Given_an_existing_movie_when_a_user_updates_the_movie_the_movie_is_updated()
-    {
-
-        _fakeMovieRepository.Movies = new List<Movie> { _movie };
-
-        UpdateMovieUseCase updateMovieUC = new UpdateMovieUseCase(_fakeMovieRepository);
-
-        MovieDto updateMovieDto = new MovieDto("The Lord of the Rings");
-
-        updateMovieUC.Execute(_movie.Id, updateMovieDto);
-
-        Assert.Equal("The Lord of the Rings", _fakeMovieRepository
-            .GetMovie(_movie.Id)
-            .FirstOrDefault()
-            .Title);
+        Assert.NotNull(_fakeMovieRepository.GetMovieById(movieId));
 
     }
 
     [Fact]
-    public void Given_an_existing_movie_when_a_user_removes_the_movie_the_movie_is_removed()
+    public void When_a_user_edits_a_movie_Then_the_movie_is_updated()
     {
 
-        _fakeMovieRepository.Movies = new List<Movie> { _movie };
+        _fakeMovieRepository.AddMovie(_movie);
 
-        RemoveMovieUseCase removeMovie = new RemoveMovieUseCase(_fakeMovieRepository);
+        EditMovieUseCase editMovieUc = new EditMovieUseCase(_fakeMovieRepository);
 
-        MovieDto updateMovieDto = new MovieDto("The Lord of the Rings");
+        EditMovieDto editMovieDto = new EditMovieDto("The Lord of the Rings", "url", "description");
 
-        removeMovie.Execute(_movie.Id);
+        editMovieUc.Execute(_movie.GetId(), editMovieDto);
 
-        Assert.Empty(_fakeMovieRepository.Movies);
+        // Question : how check that the Db is called ? Shold we check here ?
+
+
+        Assert.Equal("The Lord of the Rings", _fakeMovieRepository.GetMovieById(_movie.GetId()).Title);
+
+        Assert.Equal("url", _fakeMovieRepository.GetMovieById(_movie.GetId()).PosterImageUrl);
+
+        Assert.Equal("description", _fakeMovieRepository.GetMovieById(_movie.GetId()).Description);
+    }
+
+    [Fact]
+    public void When_a_user_removes_the_movie_then_the_movie_is_removed()
+    {
+
+        _fakeMovieRepository.AddMovie(_movie);
+
+        RemoveMovieUseCase removeMovieUC = new RemoveMovieUseCase(_fakeMovieRepository);
+
+        removeMovieUC.Execute(_movie.GetId());
+
+        Assert.Empty(_fakeMovieRepository.DataStore.Movies);
 
     }
+
+    //[Fact]
+    //public void Given_a_movie_When_a_user_removes_the_movie_And_the_movie_is_not_found_then_an_error_is_raised()
+    //{
+
+    //    _fakeMovieRepository.Movies = new List<Movie> { };
+
+    //    RemoveMovieUseCase removeMovie = new RemoveMovieUseCase(_fakeMovieRepository);
+
+    //    UpdateMovieDto updateMovieDto = new UpdateMovieDto("The Lord of the Rings", "url", "description");
+
+    //    removeMovie.Execute(_movie.GetId());
+
+    //    Assert.True(false);
+
+    //}
 
 }
 
